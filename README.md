@@ -91,7 +91,7 @@ Put the résumé at `public/resume.pdf` and set `links.resume` to `/resume.pdf`.
 
 The site is configured for a **user site** at `https://<username>.github.io` (no base path).
 
-1. Create a repository named `<username>.github.io` and push this project to its `main` branch.
+1. Create a repository named exactly `<username>.github.io` (here: `Carlos-Llanquinao.github.io`) and push this project to its `main` branch. Any other name makes it a *project* site served under a sub-path, which this config does not use.
 2. In `astro.config.mjs`, set `site: 'https://<username>.github.io'`. Canonical links, the sitemap and the link-preview image all use it; `npm run check:todo` flags it while it is still the placeholder.
 3. In the repository: **Settings → Pages → Build and deployment → Source: GitHub Actions**.
 4. Every push to `main` runs `.github/workflows/deploy.yml`: it installs, reports remaining placeholders in the job summary, builds, and publishes `dist/`.
