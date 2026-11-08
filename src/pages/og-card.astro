@@ -1,0 +1,77 @@
+---
+/**
+ * Source for public/og.png, the link-preview image shown by LinkedIn, Slack, X, etc.
+ * Not linked anywhere and marked noindex. Regenerate the PNG with `npm run og`
+ * (see scripts/make-og.mjs) whenever the name, headline or availability changes.
+ */
+import '@fontsource-variable/archivo/wdth.css';
+import '@fontsource-variable/source-serif-4/opsz.css';
+import '../styles/global.css';
+import SceneView from '../components/SceneView.astro';
+import { profile } from '../data/site';
+---
+<!doctype html>
+<html lang="en" data-theme="light" data-active-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="robots" content="noindex" />
+    <title>OG card</title>
+  </head>
+  <body>
+    <div class="og card" data-scene-host>
+      <SceneView />
+      <div class="og__body">
+        <h1 class="og__name">{profile.firstName}<br />{profile.lastName}</h1>
+        <p class="og__title">{profile.headline}</p>
+        <p class="og__avail"><span class="dot"></span>{profile.availability}</p>
+      </div>
+      <svg class="og__cube" viewBox="-70 -70 140 140" fill="none" stroke-linecap="round" aria-hidden="true">
+        <!-- Selected cube (isometric) with the move tool, as in the Unity Scene view -->
+        <g stroke="#f28c28" stroke-width="2.2" stroke-linejoin="round">
+          <path d="M0 -40 L35 -20 L35 20 L0 40 L-35 20 L-35 -20 Z" />
+          <path d="M0 0 L35 -20 M0 0 L-35 -20 M0 0 L0 40" opacity="0.55" />
+        </g>
+        <g stroke-width="3">
+          <path d="M0 0 L52 22" stroke="#d9443a" /><circle cx="52" cy="22" r="5" fill="#d9443a" stroke="none" />
+          <path d="M0 0 L0 -60" stroke="#3f9a3d" /><circle cx="0" cy="-60" r="5" fill="#3f9a3d" stroke="none" />
+          <path d="M0 0 L-50 24" stroke="#3a6be0" /><circle cx="-50" cy="24" r="5" fill="#3a6be0" stroke="none" />
+        </g>
+      </svg>
+    </div>
+  </body>
+</html>
+
+<style>
+  body { margin: 0; width: 1200px; height: 630px; overflow: hidden; background: linear-gradient(180deg, var(--sky), var(--bg)); }
+  .og {
+    position: absolute;
+    inset: 28px;
+    overflow: hidden;
+    border-radius: 26px;
+    box-shadow: var(--shadow-lg);
+    --floor-top: 66%;
+  }
+  .og__body { position: relative; z-index: 1; padding: 56px 64px; display: grid; gap: 18px; justify-items: start; }
+  .og__name {
+    font-size: 104px;
+    font-variation-settings: 'opsz' 60;
+    letter-spacing: -0.03em;
+    line-height: 0.95;
+  }
+  .og__title { font-size: 30px; font-weight: 650; }
+  .og__avail {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 18px 8px 14px;
+    border-radius: 999px;
+    border: 1px solid var(--rule);
+    background: var(--card);
+    font-size: 22px;
+    font-weight: 600;
+  }
+  .dot { width: 12px; height: 12px; border-radius: 50%; background: var(--axis-y); }
+  .og__cube { position: absolute; right: 90px; top: 120px; width: 260px; height: 260px; z-index: 1; }
+  /* Freeze the grid for a deterministic capture. */
+  .og :global(.scene__floor) { animation: none; }
+</style>

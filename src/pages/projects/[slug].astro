@@ -1,0 +1,306 @@
+---
+import { render } from 'astro:content';
+import { getProjects } from '../../lib/projects';
+import Base from '../../layouts/Base.astro';
+import T from '../../components/T.astro';
+import Media from '../../components/Media.astro';
+import Status from '../../components/Status.astro';
+import ProjectLinks from '../../components/ProjectLinks.astro';
+import SceneView from '../../components/SceneView.astro';
+import Icon from '../../components/Icon.astro';
+import { profile } from '../../data/site';
+
+export async function getStaticPaths() {
+  const projects = await getProjects();
+  return projects.map((entry, i) => ({
+    params: { slug: entry.id },
+    props: { entry, next: projects[(i + 1) % projects.length] },
+  }));
+}
+
+const { entry, next } = Astro.props;
+const { Content } = await render(entry);
+const p = entry.data;
+---
+<Base
+  title={`${p.title} — case study · ${profile.firstName} ${profile.lastName}`}
+  type="article"
+  description={p.summary}
+>
+  <!-- Title panel: same Scene-view framing as the home hero -->
+  <section class="wrap cs-top" aria-labelledby="cs-title">
+    <a class="text-link cs-back" href="/#work"><Icon name="arrow-left" /> All projects</a>
+    <div class="cs-panel card" data-scene-host>
+      <SceneView label={p.title} />
+      <div class="cs-panel__body">
+        <h1 id="cs-title" class="cs-title">{p.title}</h1>
+        <p class="cs-summary"><T text={p.summary} /></p>
+        <div class="cs-badges">
+          <span class="badge badge--dark"><span class="cat-dot" data-cat={p.category}></span>{p.category}</span>
+          <Status status={p.status} />
+          {p.draft && <span class="badge badge--draft">Draft · hidden in production</span>}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap cs">
+    <!-- Video first -->
+    <figure class="cs-video card">
+      <Media {...p.media} />
+      {p.mediaNote && (
+        <figcaption class="cs-video__note"><strong>Media note.</strong> <T text={p.mediaNote} /></figcaption>
+      )}
+    </figure>
+
+    <!-- Links right after the video, as the brief orders it -->
+    <ProjectLinks links={p.links} />
+
+    <!-- Role / Duration / Platforms / Stack -->
+    <dl class="cs-facts">
+      <div class="cs-fact card">
+        <dt class="label">Role</dt>
+        <dd><T text={p.role} /></dd>
+      </div>
+      <div class="cs-fact card">
+        <dt class="label">Duration</dt>
+        <dd class="tabular"><T text={p.duration} /></dd>
+      </div>
+      <div class="cs-fact card">
+        <dt class="label">Platforms</dt>
+        <dd>{p.platforms.join(' · ')}</dd>
+      </div>
+      <div class="cs-fact cs-fact--wide card">
+        <dt class="label">Stack</dt>
+        <dd>
+          <ul class="chips" role="list">{p.stack.map((s) => <li>{s}</li>)}</ul>
+        </dd>
+      </div>
+    </dl>
+
+    <div class="cs-columns">
+      <section class="cs-block card" aria-labelledby="context">
+        <h2 id="context">Context</h2>
+        <div class="cs-prose"><Content /></div>
+      </section>
+
+      <section class="cs-block card" aria-labelledby="contrib">
+        <h2 id="contrib">Key contributions</h2>
+        <ul class="bullets" role="list">
+          {p.contributions.map((c) => <li><T text={c} /></li>)}
+        </ul>
+      </section>
+    </div>
+
+    {p.decisions.length > 0 && (
+      <section class="cs-section" aria-labelledby="decisions">
+        <div class="section-head">
+          <h2 id="decisions">Engineering decisions</h2>
+          <p>The problems that shaped the project, what I chose, and what it led to.</p>
+        </div>
+        <ol class="pdr-list" role="list">
+          {p.decisions.map((d) => (
+            <li class="pdr card">
+              <h3 class="pdr__title"><T text={d.title} /></h3>
+              <div class="pdr__flow">
+                <div class="pdr__step">
+                  <p class="label">Problem</p>
+                  <p><T text={d.problem} /></p>
+                </div>
+                <Icon name="arrow-right" class="pdr__arrow" />
+                <div class="pdr__step">
+                  <p class="label">Decision</p>
+                  <p><T text={d.decision} /></p>
+                </div>
+                <Icon name="arrow-right" class="pdr__arrow" />
+                <div class="pdr__step pdr__step--result">
+                  <p class="label">Result</p>
+                  <p><T text={d.result} /></p>
+                </div>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </section>
+    )}
+
+    {p.metrics.length > 0 && (
+      <section class="cs-section" aria-labelledby="metrics">
+        <div class="section-head">
+          <h2 id="metrics">Metrics</h2>
+          <p>Values are filled in only once they are measured on real builds; anything still pending is marked.</p>
+        </div>
+        <div class="card metrics-card">
+          <table class="metrics">
+            <caption class="visually-hidden">Measured results for {p.title}</caption>
+            <thead>
+              <tr><th scope="col">Measure</th><th scope="col">Value</th><th scope="col">How it was measured</th></tr>
+            </thead>
+            <tbody>
+              {p.metrics.map((m) => (
+                <tr>
+                  <th scope="row">{m.label}</th>
+                  <td class="metrics__value tabular"><T text={m.value} /></td>
+                  <td class="metrics__method">{m.method ? <T text={m.method} /> : '—'}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+    )}
+
+    <section class="cs-section" aria-labelledby="limits">
+      <div class="section-head">
+        <h2 id="limits">Known limitations &amp; next steps</h2>
+      </div>
+      <div class="cs-columns">
+        <div class="cs-block card">
+          <h3>Known limitations</h3>
+          <ul class="bullets" role="list">{p.limitations.map((l) => <li><T text={l} /></li>)}</ul>
+        </div>
+        <div class="cs-block card">
+          <h3>Next steps</h3>
+          <ul class="bullets" role="list">{p.next.map((l) => <li><T text={l} /></li>)}</ul>
+        </div>
+      </div>
+    </section>
+
+    {next && next.id !== entry.id && (
+      <nav class="cs-next" aria-label="Next project">
+        <a class="cs-next__card card" href={`/projects/${next.id}/`}>
+          <span class="cs-next__title">Next: {next.data.title} <Icon name="arrow-right" /></span>
+          <span class="cs-next__summary"><T text={next.data.summary} /></span>
+        </a>
+      </nav>
+    )}
+  </div>
+</Base>
+
+<style>
+  .cs-top { padding-top: clamp(20px, 3vw, 32px); }
+  .cs-back { margin-bottom: 16px; }
+  .cs-panel {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    /* Keep the scene ground in a strip below the copy. */
+    --floor-top: calc(100% - 150px);
+  }
+  .cs-panel__body {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    gap: 16px;
+    justify-items: start;
+    padding: clamp(28px, 5vw, 64px) clamp(24px, 4.5vw, 64px) 150px;
+  }
+  .cs-badges { display: flex; flex-wrap: wrap; gap: 8px; }
+  .cs-title {
+    font-size: clamp(2.75rem, 7vw, 5.5rem);
+    font-variation-settings: 'opsz' 60;
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+  .cs-summary { max-width: 58ch; font-size: clamp(1.0625rem, 1.5vw, 1.25rem); color: var(--ink-2); }
+
+  .cs { display: grid; gap: clamp(16px, 2vw, 24px); padding-block: clamp(24px, 3vw, 36px) clamp(64px, 8vw, 104px); }
+
+  .cs-video { margin: 0; overflow: hidden; }
+  .cs-video__note { padding: 14px 20px; font-size: 0.9375rem; color: var(--ink-2); border-top: 1px solid var(--rule); }
+
+  .cs-facts {
+    display: grid;
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr) minmax(0, 2fr) minmax(0, 5fr);
+    gap: 16px;
+    margin: 0;
+  }
+  .cs-fact { padding: 16px 18px; }
+  .cs-fact dt { color: var(--ink-3); margin-bottom: 8px; }
+  .cs-fact dd { margin: 0; font-weight: 600; line-height: 1.45; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; list-style: none; }
+  .chips li {
+    padding: 3px 9px;
+    border-radius: 7px;
+    background: var(--card-2);
+    border: 1px solid var(--rule);
+    font-size: 0.8125rem;
+    font-weight: 600;
+  }
+
+  .cs-columns { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; align-items: start; }
+  .cs-block { padding: clamp(20px, 2.8vw, 32px); display: grid; gap: 14px; align-content: start; }
+  .cs-block h2 { font-size: clamp(1.5rem, 2.4vw, 1.875rem); }
+  .cs-block h3 { font-size: 1.25rem; }
+  .cs-prose { display: grid; gap: 1em; color: var(--ink-2); }
+
+  .bullets { list-style: none; display: grid; gap: 10px; color: var(--ink-2); }
+  .bullets li { position: relative; padding-left: 20px; }
+  .bullets li::before {
+    content: '';
+    position: absolute;
+    left: 2px; top: 0.62em;
+    width: 6px; height: 6px;
+    border-radius: 2px;
+    background: var(--accent);
+  }
+
+  .cs-section { padding-top: clamp(32px, 5vw, 64px); }
+
+  .pdr-list { list-style: none; display: grid; gap: 16px; }
+  .pdr { padding: clamp(20px, 2.6vw, 30px); }
+  .pdr__title { font-size: 1.375rem; margin-bottom: 18px; }
+  .pdr__flow {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr);
+    gap: 16px;
+    align-items: start;
+  }
+  /* Columns separated by rules inside the one card (no nested boxes). */
+  .pdr__step { display: grid; gap: 8px; align-content: start; height: 100%; padding-top: 12px; border-top: 2px solid var(--rule); }
+  .pdr__step > p:last-child { color: var(--ink-2); font-size: 0.9375rem; }
+  .pdr__step .label { color: var(--ink-3); }
+  .pdr__step--result { border-top-color: var(--accent); }
+  .pdr__step--result .label { color: var(--accent); }
+  .pdr :global(.pdr__arrow) { width: 20px; height: 20px; margin-top: 30px; color: var(--ink-3); }
+
+  .metrics-card { padding: 8px clamp(16px, 2.4vw, 28px); overflow-x: auto; }
+  .metrics { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+  .metrics th, .metrics td { text-align: left; padding: 14px 16px 14px 0; border-bottom: 1px solid var(--rule); vertical-align: top; }
+  .metrics tr:last-child th, .metrics tr:last-child td { border-bottom: 0; }
+  .metrics thead th { font-size: 0.75rem; font-weight: 650; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); }
+  .metrics tbody th { font-weight: 600; }
+  .metrics__value { font-family: var(--serif); font-size: 1.25rem; font-weight: 650; }
+  .metrics__method { color: var(--ink-3); font-size: 0.9375rem; }
+
+  .cs-next { padding-top: clamp(32px, 5vw, 56px); }
+  .cs-next__card {
+    display: grid;
+    gap: 8px;
+    padding: clamp(22px, 3vw, 36px);
+    text-decoration: none;
+    transition: transform 200ms var(--ease-out), box-shadow 200ms var(--ease-out), border-color 200ms var(--ease-out);
+  }
+  .cs-next__card:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); border-color: var(--accent); color: inherit; }
+  .cs-next__title { display: inline-flex; align-items: center; gap: 12px; font-family: var(--serif); font-size: clamp(1.75rem, 3.4vw, 2.5rem); font-weight: 600; }
+  .cs-next__title :global(svg) { width: 0.8em; height: 0.8em; color: var(--accent); }
+  .cs-next__summary { color: var(--ink-2); max-width: 60ch; }
+
+  @media (max-width: 1024px) {
+    .cs-facts { grid-template-columns: 1fr 1fr; }
+    .cs-columns { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 760px) {
+    .pdr__flow { grid-template-columns: 1fr; }
+    .pdr :global(.pdr__arrow) { transform: rotate(90deg); margin: 0 auto; }
+    .metrics thead { display: none; }
+    .metrics tr { display: grid; grid-template-columns: 1fr; gap: 2px; padding-block: 12px; border-bottom: 1px solid var(--rule); }
+    .metrics tr:last-child { border-bottom: 0; }
+    .metrics th, .metrics td { border: 0; padding: 0; }
+  }
+  @media (max-width: 480px) {
+    .cs-facts { grid-template-columns: 1fr; }
+  }
+</style>

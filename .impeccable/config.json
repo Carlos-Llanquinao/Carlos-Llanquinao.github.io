@@ -1,0 +1,26 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "codex-grid-background",
+        "value": "*",
+        "files": [
+          "src/components/SceneView.astro"
+        ],
+        "createdAt": "2026-11-08T00:41:29.469Z",
+        "reason": "Sanctioned: the grid is the perspective ground plane of a Unity Scene-view mock (a canvas surface), which the user explicitly kept and liked; the flat page grid was removed at the user's request."
+      },
+      {
+        "rule": "design-system-font",
+        "value": "cascadia code",
+        "files": [
+          "src/styles/global.css"
+        ],
+        "createdAt": "2026-11-08T05:11:50.785Z",
+        "reason": "Sanctioned: system monospace fallback stack for inline <code> in case studies (C# identifiers like [SerializeReference]); not a display or UI face."
+      }
+    ]
+  }
+}

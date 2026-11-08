@@ -1,0 +1,36 @@
+---
+/** Play / Download / Source / Video links for a project, in a fixed order. Missing keys are omitted. */
+import Action from './Action.astro';
+import type { IconName } from './Icon.astro';
+
+interface Props {
+  links: { play?: string; download?: string; source?: string; video?: string };
+  size?: 'sm' | 'default';
+}
+
+const { links, size = 'default' } = Astro.props;
+const order: { key: keyof Props['links']; label: string; icon: IconName }[] = [
+  { key: 'play', label: 'Play', icon: 'play' },
+  { key: 'download', label: 'Download', icon: 'download' },
+  { key: 'source', label: 'Source', icon: 'source' },
+  { key: 'video', label: 'Video', icon: 'video' },
+];
+const items = order.filter((o) => links[o.key] !== undefined);
+---
+{items.length > 0 && (
+  <ul class="project-links" aria-label="Project links">
+    {items.map((o) => (
+      <li><Action href={links[o.key]} label={o.label} icon={o.icon} size={size} external /></li>
+    ))}
+  </ul>
+)}
+
+<style>
+  .project-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 8px;
+    list-style: none;
+    padding-top: 6px;
+  }
+</style>

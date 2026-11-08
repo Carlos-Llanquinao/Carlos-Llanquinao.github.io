@@ -1,0 +1,50 @@
+---
+/**
+ * A button-styled link. When `href` still contains a placeholder, it renders as a
+ * dashed, non-interactive button with a TODO tag, so a half-finished link can never be
+ * clicked or shipped unnoticed.
+ */
+import Icon, { type IconName } from './Icon.astro';
+import { hasTodo } from '../lib/todo.mjs';
+
+interface Props {
+  href?: string;
+  label: string;
+  icon?: IconName;
+  variant?: 'default' | 'primary';
+  size?: 'default' | 'sm';
+  block?: boolean;
+  external?: boolean;
+  class?: string;
+}
+
+const { href = '', label, icon, variant = 'default', size = 'default', block = false, external = false, class: className } =
+  Astro.props;
+const pending = !href || hasTodo(href);
+const isMail = href.includes('@') && !href.startsWith('http') && !href.startsWith('mailto:');
+const finalHref = isMail ? `mailto:${href}` : href;
+const cls = [
+  'btn',
+  variant === 'primary' && 'btn--primary',
+  size === 'sm' && 'btn--sm',
+  block && 'btn--block',
+  pending && 'btn--pending',
+  className,
+]
+  .filter(Boolean)
+  .join(' ');
+---
+{pending ? (
+  <span class={cls} role="link" aria-disabled="true" title={href || 'Link pending'}>
+    {icon && <Icon name={icon} />}
+    <span>{label}</span>
+    <mark class="todo" aria-hidden="true">TODO</mark>
+    <span class="visually-hidden">— not available yet: {href || 'link pending'}</span>
+  </span>
+) : (
+  <a class={cls} href={finalHref} {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
+    {icon && <Icon name={icon} />}
+    <span>{label}</span>
+    {external && <span class="visually-hidden">(opens in a new tab)</span>}
+  </a>
+)}

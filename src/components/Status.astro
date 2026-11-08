@@ -1,0 +1,13 @@
+---
+import Icon from './Icon.astro';
+
+interface Props {
+  status: 'In development' | 'Released';
+  class?: string;
+}
+const { status, class: className } = Astro.props;
+---
+<span class:list={['badge', 'badge--status', className]}>
+  <Icon name={status === 'Released' ? 'released' : 'pending'} />
+  {status}
+</span>

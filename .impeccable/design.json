@@ -1,0 +1,170 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-08T12:00:00.000Z",
+  "title": "Design System: Carlos Llanquinao Portfolio",
+  "extensions": {
+    "colorMeta": {
+      "ultramarine": { "role": "primary", "displayName": "Ultramarine", "canonical": "#2b45d4", "tonalRamp": ["#101a52", "#18267a", "#2133a6", "#2b45d4", "#5a6fe3", "#8d9cee", "#c1caf7", "#e9ecfc"] },
+      "ultramarine-soft": { "role": "primary", "displayName": "Ultramarine Wash", "canonical": "#e9ecfc" },
+      "ultramarine-dark": { "role": "primary", "displayName": "Periwinkle (dark theme accent)", "canonical": "#93a6ff" },
+      "axis-x": { "role": "secondary", "displayName": "Scene Axis Red (X)", "canonical": "#d9443a", "tonalRamp": ["#4a1411", "#7a211c", "#a83128", "#d9443a", "#e46c64", "#ed978f", "#f5c2bd", "#fbe7e5"] },
+      "axis-y": { "role": "secondary", "displayName": "Scene Axis Green (Y)", "canonical": "#3f9a3d", "tonalRamp": ["#123012", "#1d4d1c", "#2c7229", "#3f9a3d", "#62b460", "#8dcb8b", "#bfe2be", "#e6f4e6"] },
+      "axis-z": { "role": "secondary", "displayName": "Scene Axis Blue (Z)", "canonical": "#3a6be0", "tonalRamp": ["#0f2150", "#183580", "#2650b5", "#3a6be0", "#6890e8", "#97b3f0", "#c7d6f7", "#e9effc"] },
+      "hazard-yellow": { "role": "tertiary", "displayName": "Hazard Yellow", "canonical": "#ffe81a", "tonalRamp": ["#4d4500", "#7a6e00", "#a89700", "#d6c100", "#ffe81a", "#fff06b", "#fff6a8", "#fffbe0"] },
+      "hazard-amber": { "role": "tertiary", "displayName": "Hazard Amber", "canonical": "#ffd400" },
+      "hazard-ink": { "role": "tertiary", "displayName": "Hazard Ink", "canonical": "#121212" },
+      "ground": { "role": "neutral", "displayName": "Warm Paper", "canonical": "#f4f2ee", "tonalRamp": ["#151413", "#262523", "#4a4844", "#7a7772", "#aeaaa4", "#d9d5ce", "#f4f2ee", "#fbfaf8"] },
+      "sky": { "role": "neutral", "displayName": "Scene Sky", "canonical": "#e4e9f2" },
+      "card": { "role": "neutral", "displayName": "Card White", "canonical": "#ffffff" },
+      "card-recess": { "role": "neutral", "displayName": "Recessed Card", "canonical": "#f8f7f4" },
+      "ink": { "role": "neutral", "displayName": "Editor Ink", "canonical": "#16181d", "tonalRamp": ["#16181d", "#2b2e36", "#474c58", "#646a78", "#868b97", "#aaaeb7", "#d0d2d8", "#eff0f2"] },
+      "ink-secondary": { "role": "neutral", "displayName": "Slate Ink", "canonical": "#474c58" },
+      "ink-tertiary": { "role": "neutral", "displayName": "Muted Ink", "canonical": "#646a78" },
+      "rule": { "role": "neutral", "displayName": "Hairline", "canonical": "rgb(22 24 29 / 0.1)" },
+      "rule-strong": { "role": "neutral", "displayName": "Strong Hairline", "canonical": "rgb(22 24 29 / 0.22)" },
+      "button-ink": { "role": "neutral", "displayName": "Button Ink", "canonical": "#16181d" },
+      "on-button": { "role": "neutral", "displayName": "On Button", "canonical": "#ffffff" },
+      "media-ground": { "role": "neutral", "displayName": "Viewport Black", "canonical": "#1b1e25" },
+      "ground-dark": { "role": "neutral", "displayName": "Graphite Ground", "canonical": "#151413" },
+      "card-dark": { "role": "neutral", "displayName": "Graphite Card", "canonical": "#1d1c1a" },
+      "card-recess-dark": { "role": "neutral", "displayName": "Graphite Recess", "canonical": "#262523" },
+      "sky-dark": { "role": "neutral", "displayName": "Graphite Sky", "canonical": "#201f1d" },
+      "ink-dark": { "role": "neutral", "displayName": "Paper Ink (dark)", "canonical": "#f0eeea" }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Hero name and case-study title only." },
+      "headline": { "displayName": "Headline", "purpose": "Section headings, followed by a 44x3px ultramarine rule." },
+      "title": { "displayName": "Title", "purpose": "Card, project, skill-group and job titles; serif fact and metric values." },
+      "body": { "displayName": "Body", "purpose": "Running copy, 52-68ch." },
+      "ui": { "displayName": "UI", "purpose": "Buttons, nav, chips, availability line." },
+      "label": { "displayName": "Label", "purpose": "Uppercase field labels, table headers, brand role line; never above a heading." }
+    },
+    "shadows": [
+      { "name": "rest", "value": "0 1px 2px rgb(22 24 29 / 0.06)", "purpose": "Buttons, chips, icon buttons, small pills." },
+      { "name": "card", "value": "0 1px 2px rgb(22 24 29 / 0.05), 0 14px 36px -16px rgb(22 24 29 / 0.22)", "purpose": "Every card at rest." },
+      { "name": "lifted", "value": "0 2px 4px rgb(22 24 29 / 0.05), 0 28px 64px -28px rgb(22 24 29 / 0.3)", "purpose": "Hero and case-study panels, At-a-glance card, menus, hovered cards." },
+      { "name": "card-dark", "value": "0 1px 2px rgb(0 0 0 / 0.3), 0 16px 40px -18px rgb(0 0 0 / 0.7)", "purpose": "Dark-theme card shadow." },
+      { "name": "lifted-dark", "value": "0 2px 4px rgb(0 0 0 / 0.3), 0 30px 70px -30px rgb(0 0 0 / 0.8)", "purpose": "Dark-theme lifted shadow." }
+    ],
+    "motion": [
+      { "name": "ease-out", "value": "cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "All state transitions." },
+      { "name": "state", "value": "160ms", "purpose": "Button, chip, nav and icon-button colour/border/lift." },
+      { "name": "card-lift", "value": "200-220ms", "purpose": "Card hover lift and shadow." },
+      { "name": "scene-tilt", "value": "900ms", "purpose": "Hero floor follows the pointer." },
+      { "name": "scene-dolly", "value": "24s linear infinite", "purpose": "Slow forward dolly of the floor grid; disabled under reduced motion." }
+    ],
+    "breakpoints": [
+      { "name": "phone", "value": "560px" },
+      { "name": "small", "value": "640px" },
+      { "name": "tablet", "value": "900px" },
+      { "name": "nav-collapse", "value": "1020px" },
+      { "name": "wide", "value": "1080px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Dark pill for the single primary action in a group; turns ultramarine on hover.",
+      "html": "<a class=\"ds-btn ds-btn-primary\" href=\"#\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z\"/><path d=\"M14 3v5h5\"/></svg><span>Resume PDF</span></a>",
+      "css": ".ds-btn { display: inline-flex; align-items: center; gap: 9px; min-height: 44px; padding: 10px 18px; border: 1px solid var(--rule-strong, rgb(22 24 29 / 0.22)); border-radius: 999px; background: var(--card, #fff); color: var(--ink, #16181d); font-family: var(--sans, 'Archivo Variable', system-ui, sans-serif); font-size: 0.9375rem; font-weight: 600; line-height: 1.2; text-decoration: none; box-shadow: 0 1px 2px rgb(22 24 29 / 0.06); transition: background-color 160ms cubic-bezier(0.16,1,0.3,1), border-color 160ms cubic-bezier(0.16,1,0.3,1), transform 160ms cubic-bezier(0.16,1,0.3,1); } .ds-btn svg { width: 18px; height: 18px; } .ds-btn-primary { background: var(--btn, #16181d); color: var(--on-btn, #fff); border-color: var(--btn, #16181d); } .ds-btn-primary:hover { background: var(--accent, #2b45d4); border-color: var(--accent, #2b45d4); color: #fff; transform: translateY(-1px); } .ds-btn:focus-visible { outline: 2px solid var(--accent, #2b45d4); outline-offset: 3px; }"
+    },
+    {
+      "name": "Default Button",
+      "kind": "button",
+      "refersTo": "button",
+      "description": "Outlined white pill for secondary actions.",
+      "html": "<a class=\"ds-btn2\" href=\"#\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"3\" y=\"5\" width=\"18\" height=\"14\" rx=\"2\"/><path d=\"m3 7 9 6 9-6\"/></svg><span>Email</span></a>",
+      "css": ".ds-btn2 { display: inline-flex; align-items: center; gap: 9px; min-height: 44px; padding: 10px 18px; border: 1px solid var(--rule-strong, rgb(22 24 29 / 0.22)); border-radius: 999px; background: var(--card, #fff); color: var(--ink, #16181d); font-family: var(--sans, 'Archivo Variable', system-ui, sans-serif); font-size: 0.9375rem; font-weight: 600; text-decoration: none; box-shadow: 0 1px 2px rgb(22 24 29 / 0.06); transition: border-color 160ms cubic-bezier(0.16,1,0.3,1), transform 160ms cubic-bezier(0.16,1,0.3,1); } .ds-btn2 svg { width: 18px; height: 18px; } .ds-btn2:hover { border-color: var(--ink, #16181d); transform: translateY(-1px); } .ds-btn2:focus-visible { outline: 2px solid var(--accent, #2b45d4); outline-offset: 3px; }"
+    },
+    {
+      "name": "Pending Button",
+      "kind": "button",
+      "refersTo": "button",
+      "description": "A link whose target is still a placeholder: dashed, inert, with a hazard TODO tag on its edge.",
+      "html": "<span class=\"ds-btn-pending\" role=\"link\" aria-disabled=\"true\"><span>LinkedIn</span><mark class=\"ds-btn-pending__tag\">TODO</mark></span>",
+      "css": ".ds-btn-pending { position: relative; display: inline-flex; align-items: center; min-height: 44px; padding: 10px 18px; border: 1px dashed var(--rule-strong, rgb(22 24 29 / 0.22)); border-radius: 999px; background: var(--card, #fff); color: var(--ink, #16181d); font-family: var(--sans, 'Archivo Variable', system-ui, sans-serif); font-size: 0.9375rem; font-weight: 600; cursor: not-allowed; } .ds-btn-pending__tag { position: absolute; top: -9px; right: 12px; padding: 0.04em 0.32em; font-size: 0.625rem; line-height: 1.35; letter-spacing: 0.06em; font-weight: 650; color: #121212; background: repeating-linear-gradient(-45deg, #ffe81a 0 8px, #ffd400 8px 16px); box-shadow: inset 0 0 0 1.5px #121212; border-radius: 3px; }"
+    },
+    {
+      "name": "Filter Chip",
+      "kind": "chip",
+      "refersTo": "chip-filter",
+      "description": "Category filter pill with an axis-coloured dot; selected state inverts to dark.",
+      "html": "<div class=\"ds-chips\"><button class=\"ds-chip\" aria-pressed=\"true\">All</button><button class=\"ds-chip\" aria-pressed=\"false\"><span class=\"ds-dot\" style=\"background:#3a6be0\"></span>XR &amp; simulation</button><button class=\"ds-chip\" aria-pressed=\"false\"><span class=\"ds-dot\" style=\"background:#3f9a3d\"></span>Tools</button></div>",
+      "css": ".ds-chips { display: flex; flex-wrap: wrap; gap: 8px; } .ds-chip { display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 8px 16px; border: 1px solid var(--rule, rgb(22 24 29 / 0.1)); border-radius: 999px; background: var(--card, #fff); color: var(--ink, #16181d); font-family: var(--sans, 'Archivo Variable', system-ui, sans-serif); font-size: 0.875rem; font-weight: 600; cursor: pointer; box-shadow: 0 1px 2px rgb(22 24 29 / 0.06); transition: background-color 160ms, border-color 160ms; } .ds-chip:hover { border-color: var(--ink, #16181d); } .ds-chip[aria-pressed='true'] { background: var(--btn, #16181d); color: var(--on-btn, #fff); border-color: var(--btn, #16181d); } .ds-chip:focus-visible { outline: 2px solid var(--accent, #2b45d4); outline-offset: 3px; } .ds-dot { width: 8px; height: 8px; border-radius: 50%; }"
+    },
+    {
+      "name": "Project Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "White 16px card with a 16:9 media slot, badges, serif title and summary; lifts on hover.",
+      "html": "<article class=\"ds-card\"><div class=\"ds-media\"><span class=\"ds-badge-dark\"><span class=\"ds-dot\" style=\"background:#d9443a\"></span>Games</span></div><div class=\"ds-card__body\"><h3 class=\"ds-card__title\">Ember Run</h3><p class=\"ds-card__summary\">Top-down roguelite vertical slice, playable in the browser.</p></div></article>",
+      "css": ".ds-card { max-width: 380px; overflow: hidden; background: var(--card, #fff); border: 1px solid var(--rule, rgb(22 24 29 / 0.1)); border-radius: 16px; box-shadow: 0 1px 2px rgb(22 24 29 / 0.05), 0 14px 36px -16px rgb(22 24 29 / 0.22); transition: transform 220ms cubic-bezier(0.16,1,0.3,1), box-shadow 220ms cubic-bezier(0.16,1,0.3,1); } .ds-card:hover { transform: translateY(-3px); box-shadow: 0 2px 4px rgb(22 24 29 / 0.05), 0 28px 64px -28px rgb(22 24 29 / 0.3); } .ds-media { position: relative; aspect-ratio: 16/9; background: var(--media-ground, #1b1e25); padding: 12px; } .ds-badge-dark { display: inline-flex; align-items: center; gap: 6px; min-height: 26px; padding: 3px 10px; border-radius: 999px; background: rgb(18 20 25 / 0.88); color: #f4f5f8; font: 650 0.75rem/1.2 var(--sans, 'Archivo Variable', system-ui, sans-serif); } .ds-dot { width: 8px; height: 8px; border-radius: 50%; } .ds-card__body { display: grid; gap: 10px; padding: 20px; } .ds-card__title { margin: 0; font-family: var(--serif, 'Source Serif 4 Variable', Georgia, serif); font-size: 1.5rem; font-weight: 600; line-height: 1.12; letter-spacing: -0.015em; color: var(--ink, #16181d); } .ds-card__summary { margin: 0; color: var(--ink-2, #474c58); font-family: var(--sans, 'Archivo Variable', system-ui, sans-serif); line-height: 1.6; }"
+    },
+    {
+      "name": "Site Navigation",
+      "kind": "nav",
+      "refersTo": "icon-button",
+      "description": "Sticky translucent header: serif monogram, pill nav links, 12px-rounded icon buttons (pending ones dashed with a hazard dot).",
+      "html": "<header class=\"ds-nav\"><span class=\"ds-nav__mono\">CL</span><nav class=\"ds-nav__links\"><a href=\"#\">Projects</a><a href=\"#\">Experience</a><a href=\"#\">Contact</a></nav><span class=\"ds-icon-btn ds-icon-btn--pending\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><rect x=\"3\" y=\"5\" width=\"18\" height=\"14\" rx=\"2\"/><path d=\"m3 7 9 6 9-6\"/></svg></span></header>",
+      "css": ".ds-nav { display: flex; align-items: center; gap: 20px; min-height: 68px; padding: 0 24px; background: color-mix(in srgb, var(--bg, #f4f2ee) 86%, transparent); backdrop-filter: saturate(1.4) blur(12px); border-bottom: 1px solid var(--rule, rgb(22 24 29 / 0.1)); font-family: var(--sans, 'Archivo Variable', system-ui, sans-serif); } .ds-nav__mono { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 12px; background: var(--btn, #16181d); color: var(--on-btn, #fff); font: 650 1rem var(--serif, 'Source Serif 4 Variable', Georgia, serif); margin-right: auto; } .ds-nav__links { display: flex; gap: 4px; } .ds-nav__links a { padding: 8px 12px; border-radius: 999px; font-size: 0.9375rem; font-weight: 600; color: var(--ink, #16181d); text-decoration: none; transition: background-color 160ms; } .ds-nav__links a:hover { background: var(--card, #fff); box-shadow: 0 1px 2px rgb(22 24 29 / 0.06); } .ds-nav__links a:focus-visible { outline: 2px solid var(--accent, #2b45d4); outline-offset: 3px; } .ds-icon-btn { position: relative; display: grid; place-items: center; width: 40px; height: 40px; border: 1px solid var(--rule, rgb(22 24 29 / 0.1)); border-radius: 12px; background: var(--card, #fff); color: var(--ink, #16181d); } .ds-icon-btn svg { width: 18px; height: 18px; } .ds-icon-btn--pending { border-style: dashed; border-color: var(--rule-strong, rgb(22 24 29 / 0.22)); color: var(--ink-3, #646a78); cursor: not-allowed; } .ds-icon-btn--pending::after { content: ''; position: absolute; top: -4px; right: -4px; width: 12px; height: 12px; border-radius: 50%; background: repeating-linear-gradient(-45deg, #ffe81a 0 3px, #121212 3px 5px); box-shadow: 0 0 0 1.5px var(--card, #fff); }"
+    },
+    {
+      "name": "TODO Mark and Frame",
+      "kind": "custom",
+      "refersTo": "todo-mark",
+      "description": "Hazard-tape placeholder: inline mark for pending facts, dashed hatched frame for pending media.",
+      "html": "<p class=\"ds-todo-p\">Quest 3 frame rate: <mark class=\"ds-todo\">[TODO: Quest FPS]</mark></p><div class=\"ds-todo-frame\"><span class=\"ds-todo\">[TODO: portrait photo]</span></div>",
+      "css": ".ds-todo-p { font-family: var(--sans, 'Archivo Variable', system-ui, sans-serif); color: var(--ink, #16181d); } .ds-todo { padding: 0.04em 0.32em; color: #121212; background: repeating-linear-gradient(-45deg, #ffe81a 0 8px, #ffd400 8px 16px); box-shadow: inset 0 0 0 1.5px #121212; border-radius: 3px; font-family: var(--sans, 'Archivo Variable', system-ui, sans-serif); font-weight: 650; font-stretch: 88%; box-decoration-break: clone; -webkit-box-decoration-break: clone; } .ds-todo-frame { display: grid; place-items: center; aspect-ratio: 5/2; max-width: 360px; border-radius: 12px; background: repeating-linear-gradient(-45deg, transparent 0 16px, rgb(255 232 26 / 0.08) 16px 18px), var(--media-ground, #1b1e25); outline: 2px dashed #ffe81a; outline-offset: -10px; color: #eef0f4; font-size: 0.875rem; }"
+    },
+    {
+      "name": "Scene View Panel",
+      "kind": "custom",
+      "refersTo": "card",
+      "description": "Signature hero frame: editor toolbar with Scene tab and XYZ gizmo over a CSS-3D perspective grid floor with red X and blue Z world axes.",
+      "html": "<div class=\"ds-scene\"><div class=\"ds-scene__bar\"><span class=\"ds-scene__tab\">Scene</span><svg class=\"ds-scene__gizmo\" viewBox=\"-18 -18 36 36\"><line x1=\"0\" y1=\"0\" x2=\"12\" y2=\"6\" stroke=\"#d9443a\" stroke-width=\"2\"/><line x1=\"0\" y1=\"0\" x2=\"0\" y2=\"-13\" stroke=\"#3f9a3d\" stroke-width=\"2\"/><line x1=\"0\" y1=\"0\" x2=\"-11\" y2=\"7\" stroke=\"#3a6be0\" stroke-width=\"2\"/></svg></div><div class=\"ds-scene__view\"><div class=\"ds-scene__floor\"></div></div></div>",
+      "css": ".ds-scene { position: relative; height: 260px; border-radius: 24px; background: var(--card, #fff); box-shadow: 0 2px 4px rgb(22 24 29 / 0.05), 0 28px 64px -28px rgb(22 24 29 / 0.3); overflow: hidden; font-family: var(--sans, 'Archivo Variable', system-ui, sans-serif); } .ds-scene__bar { display: flex; align-items: center; height: 40px; padding: 0 8px 0 10px; border-bottom: 1px solid var(--rule, rgb(22 24 29 / 0.1)); background: var(--card-2, #f8f7f4); font-size: 0.75rem; font-weight: 600; color: var(--ink-2, #474c58); } .ds-scene__tab { padding: 6px 10px; border-radius: 8px; background: var(--card, #fff); box-shadow: 0 1px 2px rgb(22 24 29 / 0.06); } .ds-scene__gizmo { width: 36px; height: 36px; margin-left: auto; } .ds-scene__view { position: absolute; inset: 40px 0 0 0; overflow: hidden; perspective: 760px; perspective-origin: 50% 0%; } .ds-scene__floor { position: absolute; left: -60%; right: -60%; top: 30%; height: 180%; transform-origin: 50% 0; transform: rotateX(74deg); background-image: linear-gradient(rgb(22 24 29 / 0.16) 1.5px, transparent 1.5px), linear-gradient(90deg, rgb(22 24 29 / 0.16) 1.5px, transparent 1.5px), linear-gradient(rgb(22 24 29 / 0.09) 1px, transparent 1px), linear-gradient(90deg, rgb(22 24 29 / 0.09) 1px, transparent 1px); background-size: 240px 240px, 240px 240px, 48px 48px, 48px 48px; background-position: 50% 0; mask-image: linear-gradient(to bottom, transparent 0%, #000 22%, #000 55%, transparent 92%); }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Scene View",
+    "overview": "The site is laid out like the Unity editor's Scene view seen through a calm, well-lit window: a warm off-white ground under a cool skybox band, white rounded cards that sit on it like inspector panels, and the editor's own spatial vocabulary (perspective grid floor, XYZ axis gizmo, wireframe primitives with camera and light gizmos) as the only decoration. Density is moderate and card-based; every fact lives in a panel with a clear edge, and nothing is ornamental that a Unity user would not recognise from their own workspace.\n\nThe palette is near-monochrome ink on warm paper with one ultramarine voice. The three axis colours are borrowed from the gizmo and stay small: world axes, gizmo arrows, category dots. Unfinished content is the one place the system shouts: hazard-yellow tape, deliberately foreign to the palette, so nothing pending can be mistaken for finished work.\n\nDark mode is the same world in neutral graphite: near-equal RGB, a hair warm, never blue-black slate. Cards rise from the ground by tone and shadow, not by colour.",
+    "keyCharacteristics": [
+      "Warm ground, cool sky gradient at the top of the page, white 16px cards with soft long shadows.",
+      "Serif headings (Source Serif 4) over a sans UI and body (Archivo), both self-hosted variable fonts.",
+      "One accent (ultramarine) for links, focus, active state and small structural marks.",
+      "X red / Y green / Z blue reserved for scene semantics: gizmo, world axes, category marks, the \"live\" availability dot.",
+      "Hazard-yellow TODO system for every pending fact, link, and media slot.",
+      "Pills for actions and filters; rounded rectangles for panels and icon buttons."
+    ],
+    "rules": [
+      { "name": "The One Voice Rule", "body": "Ultramarine is the only accent. It marks interaction and structure (links, focus, active, small rules and bullets), never large fills.", "section": "colors" },
+      { "name": "The Axis Leash Rule", "body": "Axis red, green and blue carry scene meaning only: gizmo, world axes, category marks, the live dot. They are never used for buttons, headings, or decoration.", "section": "colors" },
+      { "name": "The Hazard Tape Rule", "body": "Hazard yellow means \"not finished\" and nothing else. Every pending fact, link, metric, or media slot wears it; no finished element ever does.", "section": "colors" },
+      { "name": "The Graphite Rule", "body": "Dark mode neutrals stay near-equal RGB with a slight warm bias. No blue-black or slate.", "section": "colors" },
+      { "name": "The Serif Speaks, Sans Works Rule", "body": "Serif for names, headings and headline numbers; Archivo for everything you read in passing or click.", "section": "typography" },
+      { "name": "The No Eyebrow Rule", "body": "The uppercase label marks data fields; it is never placed as a kicker above a heading.", "section": "typography" },
+      { "name": "The Lift On Intent Rule", "body": "Interactive cards rise 2–3px and take the Lifted shadow on hover; buttons rise 1px. Nothing moves at rest except the scene floor's slow dolly and the live dot, both off under reduced motion.", "section": "elevation" },
+      { "name": "The Grid Is The Floor Rule", "body": "The grid exists only as the perspective ground plane inside a Scene-view panel. The page ground itself carries no grid.", "section": "elevation" }
+    ],
+    "dos": [
+      "**Do** render every unfinished fact, link, metric and media slot through the hazard-yellow TODO system, and make pending links non-clickable with dashed borders.",
+      "**Do** keep ultramarine as the only accent: links, focus, active state, the 44×3px heading rule, 6px bullet squares.",
+      "**Do** put content in 16px white cards with hairline borders and the Card shadow; separate sub-sections inside a card with hairlines.",
+      "**Do** use Source Serif 4 for headings and headline numbers, Archivo for body and UI.",
+      "**Do** use pills (999px) for actions and filters, and dark button-ink fill for the single primary action in a group.",
+      "**Do** keep dark mode on warm neutral graphite (#151413 ground, #1d1c1a cards).",
+      "**Do** gate every animation behind prefers-reduced-motion."
+    ],
+    "donts": [
+      "**Don't** use axis red, green or blue outside the gizmo, world axes, category dots and the live dot.",
+      "**Don't** use hazard yellow for anything that is finished, or as a highlight colour.",
+      "**Don't** lay a grid on the page ground; the grid belongs only to the Scene-view floor.",
+      "**Don't** use blue-black or slate neutrals in dark mode.",
+      "**Don't** place an uppercase label as a kicker above a heading.",
+      "**Don't** nest cards inside cards.",
+      "**Don't** invent metrics, logos or testimonials to fill a slot; leave the TODO showing."
+    ]
+  }
+}

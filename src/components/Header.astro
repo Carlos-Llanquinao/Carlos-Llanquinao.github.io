@@ -1,0 +1,224 @@
+---
+import Icon, { type IconName } from './Icon.astro';
+import T from './T.astro';
+import { profile, links } from '../data/site';
+import { hasTodo } from '../lib/todo.mjs';
+
+const nav = [
+  { href: '/#work', label: 'Projects' },
+  { href: '/#experience', label: 'Experience' },
+  { href: '/#skills', label: 'Skills' },
+  { href: '/#about', label: 'About' },
+  { href: '/#contact', label: 'Contact' },
+];
+
+const socials: { label: string; href: string; icon: IconName }[] = [
+  { label: 'GitHub', href: links.github, icon: 'github' },
+  { label: 'LinkedIn', href: links.linkedin, icon: 'linkedin' },
+  { label: 'Email', href: links.email, icon: 'mail' },
+];
+const initials = `${profile.firstName.charAt(0)}${profile.lastName.charAt(0)}`;
+---
+<header class="site-header">
+  <div class="wrap site-header__inner">
+    <a class="brand" href="/">
+      <span class="brand__avatar" aria-hidden="true">{initials}</span>
+      <span class="brand__text">
+        <span class="brand__name">{profile.firstName} <T text={profile.lastName} /></span>
+        <span class="brand__role">Unity · XR · Real-time simulation</span>
+      </span>
+    </a>
+    <nav aria-label="Primary">
+      <ul class="site-nav">
+        {nav.map((item) => (
+          <li><a href={item.href}>{item.label}</a></li>
+        ))}
+      </ul>
+    </nav>
+    <div class="site-header__tools">
+      {socials.map((s) =>
+        hasTodo(s.href) ? (
+          <span class="icon-btn icon-btn--pending" role="link" aria-disabled="true" title={`${s.label}: ${s.href}`}>
+            <Icon name={s.icon} />
+            <span class="visually-hidden">{s.label} — not available yet</span>
+          </span>
+        ) : (
+          <a class="icon-btn" href={s.icon === 'mail' ? `mailto:${s.href}` : s.href} aria-label={s.label}
+            {...(s.icon === 'mail' ? {} : { target: '_blank', rel: 'noopener noreferrer' })}>
+            <Icon name={s.icon} />
+          </a>
+        ),
+      )}
+      <button type="button" class="icon-btn" data-theme-toggle aria-label="Switch to dark theme">
+        <span class="theme-toggle__sun"><Icon name="sun" /></span>
+        <span class="theme-toggle__moon"><Icon name="moon" /></span>
+      </button>
+      <details class="menu">
+        <summary class="icon-btn" aria-label="Menu"><Icon name="menu" /></summary>
+        <ul class="menu__list card">
+          {nav.map((item) => (
+            <li><a href={item.href}>{item.label}</a></li>
+          ))}
+        </ul>
+      </details>
+    </div>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: color-mix(in srgb, var(--bg) 86%, transparent);
+    -webkit-backdrop-filter: saturate(1.4) blur(12px);
+    backdrop-filter: saturate(1.4) blur(12px);
+    border-bottom: 1px solid var(--rule);
+  }
+  .site-header__inner {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    min-height: 68px;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-right: auto;
+    text-decoration: none;
+    min-width: 0;
+  }
+  .brand:hover { color: inherit; }
+  .brand__avatar {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    flex: none;
+    border-radius: 12px;
+    background: var(--btn);
+    color: var(--on-btn);
+    font-family: var(--serif);
+    font-size: 1rem;
+    font-weight: 650;
+    letter-spacing: -0.02em;
+    box-shadow: var(--shadow-sm);
+  }
+  .brand__text { display: grid; line-height: 1.25; min-width: 0; }
+  .brand__name { font-weight: 700; font-size: 0.9375rem; white-space: nowrap; }
+  .brand__name :global(.todo) { font-size: 0.75rem; }
+  .brand__role {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    white-space: nowrap;
+  }
+
+  .site-nav { display: flex; gap: 4px; list-style: none; }
+  .site-nav a {
+    display: inline-block;
+    padding: 8px 12px;
+    border-radius: 999px;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background-color 160ms var(--ease-out), color 160ms var(--ease-out);
+  }
+  .site-nav a:hover { background: var(--card); color: var(--ink); box-shadow: var(--shadow-sm); }
+
+  .site-header__tools { display: flex; gap: 8px; }
+  .icon-btn {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--rule);
+    border-radius: 12px;
+    background: var(--card);
+    color: var(--ink);
+    box-shadow: var(--shadow-sm);
+    cursor: pointer;
+    transition: border-color 160ms var(--ease-out), color 160ms var(--ease-out), transform 160ms var(--ease-out);
+  }
+  .icon-btn :global(svg) { width: 18px; height: 18px; }
+  .icon-btn:hover { border-color: var(--ink); color: var(--ink); transform: translateY(-1px); }
+  .icon-btn--pending { border-style: dashed; border-color: var(--rule-strong); box-shadow: none; cursor: not-allowed; color: var(--ink-3); }
+  .icon-btn--pending:hover { transform: none; border-color: var(--rule-strong); color: var(--ink-3); }
+  /* Hazard corner on links that are still placeholders. */
+  .icon-btn--pending::after {
+    content: '';
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: repeating-linear-gradient(-45deg, var(--todo-a) 0 3px, var(--todo-ink) 3px 5px);
+    box-shadow: 0 0 0 1.5px var(--card);
+  }
+
+  .theme-toggle__moon { display: block; }
+  .theme-toggle__sun { display: none; }
+  :global(html[data-active-theme='dark']) .theme-toggle__sun { display: block; }
+  :global(html[data-active-theme='dark']) .theme-toggle__moon { display: none; }
+
+  .menu { display: none; position: relative; }
+  .menu summary { list-style: none; }
+  .menu summary::-webkit-details-marker { display: none; }
+  .menu__list {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 10px);
+    min-width: 200px;
+    padding: 8px;
+    list-style: none;
+    box-shadow: var(--shadow-lg);
+  }
+  .menu__list a {
+    display: block;
+    padding: 12px 14px;
+    border-radius: 10px;
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .menu__list a:hover { background: var(--card-2); color: var(--ink); }
+
+  @media (max-width: 1020px) {
+    .site-nav { display: none; }
+    .menu { display: block; }
+  }
+  @media (max-width: 560px) {
+    .brand__role { display: none; }
+    .site-header__tools > .icon-btn:not([data-theme-toggle]) { display: none; }
+  }
+</style>
+
+<script>
+  const root = document.documentElement;
+  const btn = document.querySelector<HTMLButtonElement>('[data-theme-toggle]');
+  const sync = () => {
+    btn?.setAttribute('aria-label', root.dataset.activeTheme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme');
+  };
+  sync();
+  btn?.addEventListener('click', () => {
+    const next = root.dataset.activeTheme === 'dark' ? 'light' : 'dark';
+    root.dataset.theme = next;
+    root.dataset.activeTheme = next;
+    try { localStorage.setItem('theme', next); } catch { /* storage blocked */ }
+    sync();
+  });
+  // Close the mobile menu after choosing a section.
+  document.querySelectorAll<HTMLAnchorElement>('.menu__list a').forEach((a) =>
+    a.addEventListener('click', () => a.closest('details')?.removeAttribute('open')),
+  );
+  // Follow the system theme while the visitor has not picked one.
+  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+    if (root.dataset.theme) return;
+    root.dataset.activeTheme = e.matches ? 'dark' : 'light';
+    sync();
+  });
+</script>
