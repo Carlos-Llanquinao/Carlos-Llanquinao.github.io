@@ -45,6 +45,8 @@ const isVideo = /\.(mp4|webm)$/i.test(src);
   .clip video {
     width: 100%;
     height: auto;
+    aspect-ratio: 16 / 9;
+    object-fit: contain;
     border-radius: 12px;
     background: var(--media-ground);
     border: 1px solid var(--rule);
