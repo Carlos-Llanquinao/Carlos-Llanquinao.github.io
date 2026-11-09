@@ -9,7 +9,7 @@ stack: [Unity 6, URP, C#, VContainer, ScriptableObjects, SerializeReference, Uni
 role: "Sole developer [TODO: confirm, credit any art or audio sources]"
 duration: "[TODO: start month and year] – present"
 media:
-  image: /media/ember-run/boss-phase2.webp
+  image: /media/ember-run/boss-phase2.gif
   alt: "Ember Run: the player fighting the Cinder Warden boss in phase two, with Husks summoned around the arena."
 links:
   play: "[TODO: itch.io page]"
@@ -45,7 +45,7 @@ decisions:
         - "**Small and tested.** The service is a 40-line class with no Unity dependency, pinned by `TokenService_NeverGrantsMoreThanMax`, `Husk_WithoutToken_CirclesInsteadOfAttacking`, `Stagger_InterruptsWindup_AndReleasesToken` and `Kill_ReleasesTokenAndStops`."
         - "**Tuning knob.** The token count became the main difficulty dial: going from 2 to 3 changes a fight more than any health or damage number."
     media:
-      src: /media/ember-run/brute-dash.webp
+      src: /media/ember-run/brute-dash.gif
       alt: The Bellows Brute telegraphs its charge, the player dashes out of the lane and the Brute stuns itself on the wall.
       caption: The Brute telegraphs its charge lane; the player dashes out and the Brute stuns itself on the wall.
     code: "Code: `Scripts/AI/Brain/AttackTokenService.cs`, `Scripts/AI/Brain/EnemyBrain.cs`. Tests: `Tests/EditMode/AI/EnemyBrainTests.cs`."
@@ -65,7 +65,7 @@ decisions:
         - "**No Play mode needed.** The logic is a plain class with an injected clock, so tests step time explicitly."
         - "**Confirmed in practice.** A script pressing attack every 0.3 s never reached the third hit, because each press expired from the buffer; pressing the way a player mashes chained all three."
     media:
-      src: /media/ember-run/combo.webp
+      src: /media/ember-run/combo.gif
       alt: Three-hit light combo with hitstop and screen shake.
       caption: The three-hit light combo, with hitstop and screen shake.
     code: "Code: `Scripts/Player/Actions/PlayerActionController.cs`, `Scripts/Player/Actions/InputBuffer.cs`. Tests: `Tests/EditMode/Player/`."
@@ -83,7 +83,7 @@ decisions:
         - "**Free combinations.** A designer can combine existing effects into a new boon without touching code; balancing is an asset change."
         - "**The cost.** Effects must stay small and composable, and a truly new mechanic still needs one new `BoonEffect` subclass. That boundary is deliberate and does not grow with content."
     media:
-      src: /media/ember-run/boon-inferno.webp
+      src: /media/ember-run/boon-inferno.gif
       alt: "Picking the Inferno Finisher boon: the third combo hit now sends a wave of fire."
       caption: "Inferno Finisher: the third combo hit now sends a wave of fire."
     code: "Code: `Scripts/Boons/`. Tests: `Tests/EditMode/Boons/`."
@@ -102,7 +102,7 @@ decisions:
         - "**Deterministic tests.** `SameSeed_GivesSameSequence`, `SameSeed_GivesSameOffer` and `SameSeed_PicksSameVariants_AndTotalsMatch` assert exact sequences instead of statistical ranges."
         - "**Easier bug reports.** A report only needs the seed from the results screen."
     media:
-      src: /media/ember-run/debug-hitboxes.webp
+      src: /media/ember-run/debug-hitboxes.gif
       alt: "F1 debug menu showing hitboxes, invincibility, current state and seed, and a boon picker."
       caption: "F1 debug menu: hitboxes, invincibility, current state and seed, grant any boon."
     code: "Code: `Scripts/Core/Random/`. Tests: `Tests/EditMode/Core/RunRandomTests.cs`, `RunSeedSourceTests.cs`."
@@ -117,7 +117,7 @@ notes:
     after:
       - "The fix was Minimal stripping, which costs about 1.5 MB. It is documented as decision D82, and the gotcha is recorded so it does not cost the next person an afternoon."
     media:
-      src: /media/ember-run/boss-phase2.webp
+      src: /media/ember-run/boss-phase2.gif
       alt: "Cinder Warden phase two: the arena edge ignites and Husks are summoned."
       caption: "Cinder Warden, phase two: the arena edge ignites and Husks are summoned."
 metrics:
@@ -145,7 +145,7 @@ limitations:
 next:
   - "[TODO: next milestone]"
   - "[TODO: next feature]"
-mediaNote: "Every clip was recorded from scripted play sessions with `GifRecorder`, an Editor-only recorder written for this project: it captures the Game view in real time (so hitstop shows as played), builds one median-cut palette per clip and stores only the changed rectangle of each frame. `Tools/gif_check.py`, an independent decoder, verifies every clip. The images on this page are still frames from those clips [TODO: replace with the animated GIFs or MP4s]. Art and audio are [TODO: state source — own work, asset packs, licences]."
+mediaNote: "Every clip was recorded from scripted play sessions with `GifRecorder`, an Editor-only recorder written for this project: it captures the Game view in real time (so hitstop shows as played), builds one median-cut palette per clip and stores only the changed rectangle of each frame. `Tools/gif_check.py`, an independent decoder, verifies every clip. Art and audio are [TODO: state source — own work, asset packs, licences]."
 ---
 
 Ember Run is a vertical slice of a top-down roguelite for the browser: three rooms, 14 boons and a two-phase boss, the Cinder Warden.
