@@ -4,7 +4,7 @@
  * Usage:  npm run check:todo            -> report, exit 0
  *         npm run check:todo -- --strict -> report, exit 1 if any placeholder remains
  */
-import { readdirSync, readFileSync, statSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { join, relative } from 'node:path';
 import { TODO_PATTERN } from '../src/lib/todo.mjs';
 
@@ -35,6 +35,18 @@ for (const root of roots) {
       console.log(`${relative('.', file)}:${i + 1}  ${hits.join('  ')}`);
     });
   }
+}
+
+// Media referenced by projects (src: /media/..., image: /media/..., video: /media/...) must exist in public/.
+for (const file of walk('src/content')) {
+  const lines = readFileSync(file, 'utf8').split(/\r?\n/);
+  lines.forEach((line, i) => {
+    const m = line.match(/^\s*(?:src|image|video|poster):\s*"?(\/[^"\s]+)"?/);
+    if (m && !existsSync(join('public', m[1]))) {
+      total += 1;
+      console.log(`${relative('.', file)}:${i + 1}  missing file public${m[1]}`);
+    }
+  });
 }
 
 // The site URL drives canonical links, the sitemap and the link-preview image.

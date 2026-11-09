@@ -1,0 +1,36 @@
+---
+/**
+ * Renders a case-study rich-text block: a plain string, or { text?, points[] } as a lead
+ * sentence followed by bullet points. Inline formatting goes through <T>.
+ */
+import T from './T.astro';
+
+type RichText = string | { text?: string; points: string[] };
+interface Props {
+  value: RichText;
+}
+
+const { value } = Astro.props;
+const block = typeof value === 'string' ? { text: value, points: [] as string[] } : value;
+---
+{block.text && <p><T text={block.text} /></p>}
+{block.points.length > 0 && (
+  <ul class="rich-points" role="list">
+    {block.points.map((pt) => <li><T text={pt} /></li>)}
+  </ul>
+)}
+
+<style>
+  .rich-points { list-style: none; display: grid; gap: 8px; margin-top: 8px; }
+  .rich-points li { position: relative; padding-left: 18px; }
+  .rich-points li::before {
+    content: '';
+    position: absolute;
+    left: 2px;
+    top: 0.62em;
+    width: 6px;
+    height: 6px;
+    border-radius: 2px;
+    background: var(--accent);
+  }
+</style>

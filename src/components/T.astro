@@ -1,7 +1,8 @@
 ---
 /**
  * Renders a content string. Placeholders ([TODO: ...], [SURNAME]) become hazard-styled
- * <mark class="todo">, and `backtick` spans become <code>. Use for every content string.
+ * <mark class="todo">, `backtick` spans become <code>, and **double asterisks** become <strong>.
+ * Use for every content string.
  */
 import { splitTodo } from '../lib/todo.mjs';
 
@@ -11,15 +12,23 @@ interface Props {
 
 const { text = '' } = Astro.props;
 const parts = splitTodo(text);
-const withCode = (s: string) =>
-  s.split(/(`[^`]+`)/).map((piece) =>
-    piece.startsWith('`') && piece.endsWith('`') && piece.length > 1 ? { code: piece.slice(1, -1) } : { plain: piece },
-  );
+
+type Piece = { code: string } | { strong: string } | { plain: string };
+const inline = (s: string): Piece[] =>
+  s.split(/(`[^`]+`)/).flatMap((piece): Piece[] => {
+    if (piece.startsWith('`') && piece.endsWith('`') && piece.length > 1) return [{ code: piece.slice(1, -1) }];
+    return piece
+      .split(/(\*\*[^*]+\*\*)/)
+      .filter(Boolean)
+      .map((b) => (b.startsWith('**') && b.endsWith('**') && b.length > 4 ? { strong: b.slice(2, -2) } : { plain: b }));
+  });
 ---
 {parts.map((p) =>
   p.todo ? (
     <mark class="todo">{p.text}</mark>
   ) : (
-    withCode(p.text).map((c) => ('code' in c ? <code>{c.code}</code> : c.plain))
+    inline(p.text).map((c) =>
+      'code' in c ? <code>{c.code}</code> : 'strong' in c ? <strong>{c.strong}</strong> : c.plain,
+    )
   ),
 )}

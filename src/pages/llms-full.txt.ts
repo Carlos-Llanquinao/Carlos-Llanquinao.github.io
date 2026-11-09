@@ -12,6 +12,9 @@ export const GET: APIRoute = async ({ site }) => {
   const base = site?.toString().replace(/\/$/, '') ?? '';
   const out: string[] = [];
   const list = (items: string[]) => items.map((i) => `- ${i}`).join('\n');
+  /** Flattens a rich-text block (string, or lead sentence + points) into plain lines. */
+  const rich = (v: string | { text?: string; points: string[] }) =>
+    typeof v === 'string' ? v : [v.text ?? '', ...v.points.map((pt) => `  - ${pt}`)].filter(Boolean).join('\n');
 
   out.push(`# ${profile.firstName} ${profile.lastName} — Portfolio`);
   out.push(`> ${profile.headline}. ${profile.availability}.`);
@@ -57,6 +60,7 @@ export const GET: APIRoute = async ({ site }) => {
         `Duration: ${d.duration}`,
         `Platforms: ${d.platforms.join(', ')}`,
         `Stack: ${d.stack.join(', ')}`,
+        ...d.facts.map((f) => `${f.label}: ${f.value}`),
       ].join('\n'),
     );
     const linkLines = Object.entries(d.links).map(([k, v]) => `${k[0].toUpperCase()}${k.slice(1)}: ${v}`);
@@ -64,7 +68,22 @@ export const GET: APIRoute = async ({ site }) => {
     section.push('Context:\n\n' + (p.body ?? '').trim());
     section.push('Key contributions:\n' + list(d.contributions));
     for (const dec of d.decisions) {
-      section.push(`Decision — ${dec.title}\n- Problem: ${dec.problem}\n- Decision: ${dec.decision}\n- Result: ${dec.result}`);
+      section.push(
+        [
+          `Decision — ${dec.title}`,
+          `Problem: ${rich(dec.problem)}`,
+          `Decision: ${rich(dec.decision)}`,
+          `Result: ${rich(dec.result)}`,
+          dec.code ?? '',
+        ]
+          .filter(Boolean)
+          .join('\n'),
+      );
+    }
+    for (const n of d.notes) {
+      section.push(
+        [`Lesson — ${n.title}`, ...n.paragraphs, ...n.steps.map((t, i) => `${i + 1}. ${t}`), ...n.after].join('\n'),
+      );
     }
     if (d.metrics.length)
       section.push('Metrics:\n' + list(d.metrics.map((m) => `${m.label}: ${m.value}${m.method ? ` (${m.method})` : ''}`)));

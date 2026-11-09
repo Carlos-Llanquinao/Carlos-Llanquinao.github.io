@@ -7,6 +7,25 @@ import { z } from 'astro/zod';
  * Frontmatter holds the structured case-study fields; the Markdown body is the "Context" section.
  * Any string may contain placeholders such as [TODO: Quest FPS]; see src/lib/todo.mjs.
  */
+/**
+ * A block of case-study text: either one plain string, or an optional lead sentence plus bullet points.
+ * Strings support `code` and **bold**.
+ */
+const richText = z.union([
+  z.string(),
+  z.object({
+    text: z.string().optional(),
+    points: z.array(z.string()).default([]),
+  }),
+]);
+
+/** An image (GIF/PNG/WebP) or video clip under /public. Missing files render as a TODO frame. */
+const clip = z.object({
+  src: z.string(),
+  alt: z.string(),
+  caption: z.string().optional(),
+});
+
 const projects = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/projects' }),
   schema: z.object({
@@ -26,6 +45,8 @@ const projects = defineCollection({
     media: z.object({
       /** Path under /public, e.g. /media/liftlab.mp4. Leave empty while the capture is pending. */
       video: z.string().optional(),
+      /** Alternative to `video`: an animated GIF or still image under /public. */
+      image: z.string().optional(),
       poster: z.string().optional(),
       /** Describes what the video shows; used as accessible label. */
       alt: z.string(),
@@ -45,9 +66,27 @@ const projects = defineCollection({
       .array(
         z.object({
           title: z.string(),
-          problem: z.string(),
-          decision: z.string(),
-          result: z.string(),
+          problem: richText,
+          decision: richText,
+          result: richText,
+          /** Optional clip shown beside the decision (switches the block to the wide layout). */
+          media: clip.optional(),
+          /** Where the code and tests live, e.g. "Code: `Scripts/AI/...`. Tests: `Tests/...`." */
+          code: z.string().optional(),
+        }),
+      )
+      .default([]),
+    /** Extra field cards shown next to Role / Duration / Platforms / Stack (e.g. Architecture). */
+    facts: z.array(z.object({ label: z.string(), value: z.string() })).default([]),
+    /** Free-form lessons or war stories told after the decisions. */
+    notes: z
+      .array(
+        z.object({
+          title: z.string(),
+          paragraphs: z.array(z.string()).default([]),
+          steps: z.array(z.string()).default([]),
+          after: z.array(z.string()).default([]),
+          media: clip.optional(),
         }),
       )
       .default([]),

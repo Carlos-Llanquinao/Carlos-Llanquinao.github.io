@@ -1,0 +1,65 @@
+---
+/**
+ * A figure for a GIF, image or short video under /public. If the file is not in public/ yet,
+ * it renders a hazard TODO frame naming the exact path to add, so a missing capture never
+ * ships as a broken image.
+ */
+import fs from 'node:fs';
+import path from 'node:path';
+import Icon from './Icon.astro';
+import T from './T.astro';
+
+interface Props {
+  src: string;
+  alt: string;
+  caption?: string;
+  /** Eager-load only the first visible clip; everything else is lazy. */
+  eager?: boolean;
+  class?: string;
+}
+
+const { src, alt, caption, eager = false, class: className } = Astro.props;
+const file = path.join(process.cwd(), 'public', src.replace(/^\//, ''));
+const exists = fs.existsSync(file);
+const isVideo = /\.(mp4|webm)$/i.test(src);
+---
+<figure class:list={['clip', className]}>
+  {exists ? (
+    isVideo ? (
+      <video src={src} autoplay muted loop playsinline preload={eager ? 'auto' : 'none'} aria-label={alt}></video>
+    ) : (
+      <img src={src} alt={alt} loading={eager ? 'eager' : 'lazy'} decoding="async" />
+    )
+  ) : (
+    <div class="clip__pending todo-frame" role="img" aria-label={`Clip placeholder: ${alt}`}>
+      <Icon name="film" />
+      <mark class="todo">[TODO: add public{src}]</mark>
+    </div>
+  )}
+  {caption && <figcaption><T text={caption} /></figcaption>}
+</figure>
+
+<style>
+  .clip { margin: 0; display: grid; gap: 10px; }
+  .clip img,
+  .clip video {
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+    background: var(--media-ground);
+    border: 1px solid var(--rule);
+  }
+  .clip__pending {
+    aspect-ratio: 16 / 10;
+    border-radius: 12px;
+    display: grid;
+    place-content: center;
+    justify-items: center;
+    gap: 10px;
+    padding: 16px;
+    text-align: center;
+    font-size: 0.8125rem;
+  }
+  .clip__pending :global(svg) { width: 28px; height: 28px; color: var(--todo-a); }
+  .clip figcaption { font-size: 0.875rem; color: var(--ink-3); line-height: 1.5; }
+</style>

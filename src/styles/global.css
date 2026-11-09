@@ -363,6 +363,8 @@ mark.todo {
 }
 .media video,
 .media img { width: 100%; height: 100%; object-fit: cover; }
+/* GIF captures keep their full frame (HUD included): letterbox instead of crop. */
+.media--image img { object-fit: contain; }
 
 .media--pending {
   display: grid;

@@ -1,13 +1,17 @@
 ---
 /**
- * 16:9 media slot. With a `video` path it renders a lazy <video>; without one it renders a
- * clearly marked placeholder describing the capture still needed.
+ * 16:9 media slot. With a `video` path it renders a lazy <video>; with an `image` path (GIF or
+ * still) it renders the image letterboxed on the media ground. Without either, or when the file
+ * is not in public/ yet, it renders a clearly marked placeholder describing what is missing.
  */
+import fs from 'node:fs';
+import path from 'node:path';
 import Icon from './Icon.astro';
 import T from './T.astro';
 
 interface Props {
   video?: string;
+  image?: string;
   poster?: string;
   alt: string;
   pending?: string;
@@ -15,12 +19,19 @@ interface Props {
   controls?: boolean;
   /** Shorter placeholder text for small cards. */
   compact?: boolean;
+  /** Load immediately (first viewport). */
+  eager?: boolean;
   class?: string;
 }
 
-const { video, poster, alt, pending, controls = true, compact = false, class: className } = Astro.props;
+const { video, image, poster, alt, pending, controls = true, compact = false, eager = false, class: className } =
+  Astro.props;
+const inPublic = (src?: string) => !!src && fs.existsSync(path.join(process.cwd(), 'public', src.replace(/^\//, '')));
+const hasVideo = inPublic(video);
+const hasImage = !hasVideo && inPublic(image);
+const missing = (video && !hasVideo) || (image && !hasImage && !hasVideo) ? (video ?? image) : undefined;
 ---
-{video ? (
+{hasVideo ? (
   <div class:list={['media', className]}>
     {controls ? (
       <video src={video} poster={poster} controls preload="none" playsinline aria-label={alt} />
@@ -30,18 +41,24 @@ const { video, poster, alt, pending, controls = true, compact = false, class: cl
       <video src={video} muted playsinline preload="metadata" aria-label={alt} />
     )}
   </div>
+) : hasImage ? (
+  <div class:list={['media', 'media--image', className]}>
+    <img src={image} alt={alt} loading={eager ? 'eager' : 'lazy'} decoding="async" />
+  </div>
 ) : (
   <div class:list={['media', 'media--pending', 'todo-frame', className]} role="img" aria-label={`Video placeholder: ${alt}`}>
     <div class="media__note">
       <Icon name="film" />
       {compact ? (
         <mark class="todo">[TODO: video capture]</mark>
+      ) : missing ? (
+        <mark class="todo">[TODO: add public{missing}]</mark>
       ) : pending ? (
         <span><T text={pending} /></span>
       ) : (
         <mark class="todo">[TODO: video capture]</mark>
       )}
-      {!compact && <span class="media__spec">16:9 · MP4 / WebM · poster frame · captions</span>}
+      {!compact && <span class="media__spec">16:9 · MP4 / WebM / GIF · poster frame · captions</span>}
     </div>
   </div>
 )}

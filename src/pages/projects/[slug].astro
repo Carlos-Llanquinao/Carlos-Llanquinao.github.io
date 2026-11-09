@@ -8,6 +8,8 @@ import Status from '../../components/Status.astro';
 import ProjectLinks from '../../components/ProjectLinks.astro';
 import SceneView from '../../components/SceneView.astro';
 import Icon from '../../components/Icon.astro';
+import Rich from '../../components/Rich.astro';
+import Clip from '../../components/Clip.astro';
 import { profile } from '../../data/site';
 
 export async function getStaticPaths() {
@@ -21,6 +23,9 @@ export async function getStaticPaths() {
 const { entry, next } = Astro.props;
 const { Content } = await render(entry);
 const p = entry.data;
+// A decision with media or bullet points gets the wide layout (text column + clip) instead of the 3-step strip.
+const isWide = (d: (typeof p.decisions)[number]) =>
+  !!d.media || [d.problem, d.decision, d.result].some((v) => typeof v !== 'string');
 ---
 <Base
   title={`${p.title} — case study · ${profile.firstName} ${profile.lastName}`}
@@ -47,7 +52,7 @@ const p = entry.data;
   <div class="wrap cs">
     <!-- Video first -->
     <figure class="cs-video card">
-      <Media {...p.media} />
+      <Media {...p.media} eager />
       {p.mediaNote && (
         <figcaption class="cs-video__note"><strong>Media note.</strong> <T text={p.mediaNote} /></figcaption>
       )}
@@ -78,6 +83,17 @@ const p = entry.data;
       </div>
     </dl>
 
+    {p.facts.length > 0 && (
+      <dl class="cs-facts cs-facts--extra">
+        {p.facts.map((f) => (
+          <div class="cs-fact card">
+            <dt class="label">{f.label}</dt>
+            <dd><T text={f.value} /></dd>
+          </div>
+        ))}
+      </dl>
+    )}
+
     <div class="cs-columns">
       <section class="cs-block card" aria-labelledby="context">
         <h2 id="context">Context</h2>
@@ -99,30 +115,69 @@ const p = entry.data;
           <p>The problems that shaped the project, what I chose, and what it led to.</p>
         </div>
         <ol class="pdr-list" role="list">
-          {p.decisions.map((d) => (
-            <li class="pdr card">
-              <h3 class="pdr__title"><T text={d.title} /></h3>
-              <div class="pdr__flow">
-                <div class="pdr__step">
-                  <p class="label">Problem</p>
-                  <p><T text={d.problem} /></p>
+          {p.decisions.map((d) =>
+            isWide(d) ? (
+              <li class="pdr pdr--wide card">
+                <div class="pdr__text">
+                  <h3 class="pdr__title"><T text={d.title} /></h3>
+                  <div class="pdr__step">
+                    <p class="label">Problem</p>
+                    <Rich value={d.problem} />
+                  </div>
+                  <div class="pdr__step">
+                    <p class="label">Decision</p>
+                    <Rich value={d.decision} />
+                  </div>
+                  <div class="pdr__step pdr__step--result">
+                    <p class="label">Result</p>
+                    <Rich value={d.result} />
+                  </div>
+                  {d.code && <p class="pdr__code"><Icon name="source" /> <span><T text={d.code} /></span></p>}
                 </div>
-                <Icon name="arrow-right" class="pdr__arrow" />
-                <div class="pdr__step">
-                  <p class="label">Decision</p>
-                  <p><T text={d.decision} /></p>
+                {d.media && <Clip {...d.media} class="pdr__clip" />}
+              </li>
+            ) : (
+              <li class="pdr card">
+                <h3 class="pdr__title"><T text={d.title} /></h3>
+                <div class="pdr__flow">
+                  <div class="pdr__step">
+                    <p class="label">Problem</p>
+                    <Rich value={d.problem} />
+                  </div>
+                  <Icon name="arrow-right" class="pdr__arrow" />
+                  <div class="pdr__step">
+                    <p class="label">Decision</p>
+                    <Rich value={d.decision} />
+                  </div>
+                  <Icon name="arrow-right" class="pdr__arrow" />
+                  <div class="pdr__step pdr__step--result">
+                    <p class="label">Result</p>
+                    <Rich value={d.result} />
+                  </div>
                 </div>
-                <Icon name="arrow-right" class="pdr__arrow" />
-                <div class="pdr__step pdr__step--result">
-                  <p class="label">Result</p>
-                  <p><T text={d.result} /></p>
-                </div>
-              </div>
-            </li>
-          ))}
+                {d.code && <p class="pdr__code"><Icon name="source" /> <span><T text={d.code} /></span></p>}
+              </li>
+            ),
+          )}
         </ol>
       </section>
     )}
+
+    {p.notes.map((n, i) => (
+      <section class="cs-section" aria-labelledby={`note-${i}`}>
+        <article class="note card">
+          <div class="note__text">
+            <h2 id={`note-${i}`} class="note__title"><T text={n.title} /></h2>
+            {n.paragraphs.map((t) => <p><T text={t} /></p>)}
+            {n.steps.length > 0 && (
+              <ol class="note__steps">{n.steps.map((t) => <li><T text={t} /></li>)}</ol>
+            )}
+            {n.after.map((t) => <p><T text={t} /></p>)}
+          </div>
+          {n.media && <Clip {...n.media} class="note__clip" />}
+        </article>
+      </section>
+    ))}
 
     {p.metrics.length > 0 && (
       <section class="cs-section" aria-labelledby="metrics">
@@ -260,11 +315,53 @@ const p = entry.data;
   }
   /* Columns separated by rules inside the one card (no nested boxes). */
   .pdr__step { display: grid; gap: 8px; align-content: start; height: 100%; padding-top: 12px; border-top: 2px solid var(--rule); }
-  .pdr__step > p:last-child { color: var(--ink-2); font-size: 0.9375rem; }
   .pdr__step .label { color: var(--ink-3); }
   .pdr__step--result { border-top-color: var(--accent); }
   .pdr__step--result .label { color: var(--accent); }
   .pdr :global(.pdr__arrow) { width: 20px; height: 20px; margin-top: 30px; color: var(--ink-3); }
+
+  /* Wide decision: text column + clip. */
+  .pdr--wide {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: clamp(20px, 3vw, 40px);
+    align-items: start;
+  }
+  .pdr__text { display: grid; gap: 18px; min-width: 0; }
+  /* Long identifiers (test names, paths) wrap instead of overflowing on phones. */
+  .pdr :global(code), .note :global(code) { overflow-wrap: anywhere; }
+  .pdr--wide .pdr__title { margin-bottom: 0; }
+  .pdr--wide .pdr__step { height: auto; }
+  .pdr__step :global(p),
+  .pdr__step :global(li) { color: var(--ink-2); font-size: 0.9375rem; }
+  .pdr__step :global(strong) { color: var(--ink); font-weight: 650; }
+  :global(.pdr__clip) { position: sticky; top: 92px; }
+  .pdr__code {
+    display: flex;
+    gap: 8px;
+    align-items: baseline;
+    margin-top: 4px;
+    padding-top: 12px;
+    border-top: 1px dashed var(--rule-strong);
+    font-size: 0.8125rem;
+    color: var(--ink-3);
+  }
+  .pdr__code :global(svg) { width: 15px; height: 15px; flex: none; position: relative; top: 2px; }
+  .pdr__code :global(code) { font-size: 0.95em; }
+
+  .note {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: clamp(20px, 3vw, 40px);
+    align-items: start;
+    padding: clamp(20px, 2.8vw, 32px);
+  }
+  .note__text { display: grid; gap: 14px; color: var(--ink-2); min-width: 0; }
+  .note__title { font-size: clamp(1.5rem, 2.4vw, 1.875rem); color: var(--ink); }
+  .note__text :global(strong) { color: var(--ink); }
+  .note__steps { display: grid; gap: 8px; padding-left: 1.4em; }
+  .note__steps li::marker { color: var(--accent); font-weight: 700; }
+  .cs-facts--extra { grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); }
 
   .metrics-card { padding: 8px clamp(16px, 2.4vw, 28px); overflow-x: auto; }
   .metrics { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
@@ -291,6 +388,8 @@ const p = entry.data;
   @media (max-width: 1024px) {
     .cs-facts { grid-template-columns: 1fr 1fr; }
     .cs-columns { grid-template-columns: 1fr; }
+    .pdr--wide, .note { grid-template-columns: minmax(0, 1fr); }
+    :global(.pdr__clip) { position: static; }
   }
   @media (max-width: 760px) {
     .pdr__flow { grid-template-columns: 1fr; }
