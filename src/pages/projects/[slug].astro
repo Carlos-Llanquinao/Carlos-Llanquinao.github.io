@@ -117,7 +117,7 @@ const isWide = (d: (typeof p.decisions)[number]) =>
         <ol class="pdr-list" role="list">
           {p.decisions.map((d) =>
             isWide(d) ? (
-              <li class="pdr pdr--wide card">
+              <li class:list={['pdr', 'pdr--wide', 'card', !d.media && 'pdr--solo']}>
                 <div class="pdr__text">
                   <h3 class="pdr__title"><T text={d.title} /></h3>
                   <div class="pdr__step">
@@ -165,7 +165,7 @@ const isWide = (d: (typeof p.decisions)[number]) =>
 
     {p.notes.map((n, i) => (
       <section class="cs-section" aria-labelledby={`note-${i}`}>
-        <article class="note card">
+        <article class:list={['note', 'card', !n.media && 'note--solo']}>
           <div class="note__text">
             <h2 id={`note-${i}`} class="note__title"><T text={n.title} /></h2>
             {n.paragraphs.map((t) => <p><T text={t} /></p>)}
@@ -348,6 +348,10 @@ const isWide = (d: (typeof p.decisions)[number]) =>
   }
   .pdr__code :global(svg) { width: 15px; height: 15px; flex: none; position: relative; top: 2px; }
   .pdr__code :global(code) { font-size: 0.95em; }
+
+  /* No clip: the text takes the full card width, kept to a readable measure. */
+  .pdr--solo, .note--solo { grid-template-columns: minmax(0, 1fr); }
+  .pdr--solo .pdr__text, .note--solo .note__text { max-width: 860px; }
 
   .note {
     display: grid;

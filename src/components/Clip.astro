@@ -28,7 +28,10 @@ const isVideo = /\.(mp4|webm)$/i.test(src);
     isVideo ? (
       <video src={src} autoplay muted loop playsinline preload={eager ? 'auto' : 'none'} aria-label={alt}></video>
     ) : (
-      <img src={src} alt={alt} loading={eager ? 'eager' : 'lazy'} decoding="async" />
+      <a class="clip__zoom" href={src} target="_blank" rel="noopener" title="Open full size">
+        <img src={src} alt={alt} loading={eager ? 'eager' : 'lazy'} decoding="async" />
+        <span class="visually-hidden">(opens full size in a new tab)</span>
+      </a>
     )
   ) : (
     <div class="clip__pending todo-frame" role="img" aria-label={`Clip placeholder: ${alt}`}>
@@ -51,6 +54,10 @@ const isVideo = /\.(mp4|webm)$/i.test(src);
     background: var(--media-ground);
     border: 1px solid var(--rule);
   }
+  /* Editor captures carry small text: clicking opens the clip at full size. */
+  .clip__zoom { display: block; border-radius: 12px; cursor: zoom-in; }
+  .clip__zoom img { transition: border-color 160ms var(--ease-out), box-shadow 160ms var(--ease-out); }
+  .clip__zoom:hover img { border-color: var(--accent); box-shadow: var(--shadow); }
   .clip__pending {
     aspect-ratio: 16 / 10;
     border-radius: 12px;
